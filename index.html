@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PadelHub Indonesia — Komunitas & Booking Lapangan Padel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            950: '#070F1C',
+                            900: '#0B192C',
+                            800: '#132744',
+                            700: '#1E3A63',
+                        },
+                        court: {
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                        limepadel: '#CCFF00'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar & animations */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .fade-in { animation: fadeIn 0.35s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pop-in { animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .court-pattern {
+            background-color: #0B192C;
+            background-image: radial-gradient(rgba(16, 185, 129, 0.15) 1px, transparent 1px),
+                              linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 24px 24px, 60px 60px, 60px 60px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-court-500 selection:text-white min-h-screen flex flex-col">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+    <!-- ===================================================================== -->
+    <!-- 1. LANDING PAGE / ONBOARDING VIEW                                     -->
+    <!-- ===================================================================== -->
+    <section id="view-landing" class="min-h-screen court-pattern text-white flex flex-col justify-between relative overflow-hidden">
+        <!-- Decorative glow -->
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-court-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 -left-24 w-80 h-80 bg-blue-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <header class="max-w-6xl mx-auto w-full px-6 py-6 flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-court-500 flex items-center justify-center shadow-lg shadow-court-500/30">
+                    <svg class="w-6 h-6 text-navy-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M5.6 5.6c3.5 3.5 3.5 9.3 0 12.8"/>
+                        <path d="M18.4 5.6c-3.5 3.5-3.5 9.3 0 12.8"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-display font-extrabold text-xl tracking-tight text-white">PadelHub</span>
+                    <span class="text-xs font-bold uppercase tracking-widest text-limepadel block -mt-1">Indonesia</span>
+                </div>
+            </div>
+            <button onclick="quickDemoLogin()" class="text-sm font-medium text-slate-300 hover:text-white bg-white/10 hover:bg-white/15 px-4 py-2 rounded-full transition backdrop-blur-sm border border-white/10">
+                Masuk Cepat (Demo)
+            </button>
+        </header>
+
+        <!-- Hero Content -->
+        <main class="max-w-6xl mx-auto w-full px-6 py-8 md:py-12 grid lg:grid-cols-12 gap-10 items-center relative z-10">
+            <div class="lg:col-span-7 space-y-6 fade-in">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-court-500/15 border border-court-500/30 text-court-400 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-limepadel animate-pulse"></span>
+                    Platform Komunitas & Booking Padel #1 di Jakarta & BSD
+                </div>
+                <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+                    Booking Lapangan & Cari Lawan <span class="text-transparent bg-clip-text bg-gradient-to-r from-court-400 to-limepadel">Mabar Padel</span> dalam Hitungan Detik.
+                </h1>
+                <p class="text-slate-300 text-base sm:text-lg max-w-xl leading-relaxed">
+                    Cek jadwal real-time klub favoritmu di Kemang, Senayan, hingga BSD. Gabung sesi <em>Open Match</em> sesuai level permainanmu tanpa ribet!
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-3.5 pt-2">
+                    <button onclick="navigateTo('register')" class="px-7 py-4 rounded-2xl bg-court-500 hover:bg-court-400 text-navy-950 font-bold text-base shadow-xl shadow-court-500/25 transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        <span>Daftar & Mulai Main</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                    <button onclick="quickDemoLogin()" class="px-7 py-4 rounded-2xl bg-navy-800/80 hover:bg-navy-700 text-white font-semibold text-base border border-white/15 transition flex items-center justify-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5 text-limepadel"></i>
+                        <span>Simulasi Instan (Tanpa Isi Form)</span>
+                    </button>
+                </div>
+
+                <!-- Mini Stats -->
+                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/10 max-w-lg">
+                    <div>
+                        <p class="font-display text-2xl font-extrabold text-white">12+</p>
+                        <p class="text-xs text-slate-400">Klub & Arena Padel</p>
+                    </div>
+                    <div>
+                        <p class="font-display text-2xl font-extrabold text-court-400">3.400+</p>
+                        <p class="text-xs text-slate-400">Pemain Aktif</p>
+                    </div>
+                    <div>
+                        <p class="font-display text-2xl font-extrabold text-limepadel">45+</p>
+                        <p class="text-xs text-slate-400">Open Match / Hari</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Preview Card on Landing -->
+            <div class="lg:col-span-5 fade-in">
+                <div class="bg-navy-800/70 backdrop-blur-md border border-white/15 rounded-3xl p-6 shadow-2xl space-y-5">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-limepadel/20 text-limepadel flex items-center justify-center font-bold">
+                                PH
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-white">Live Open Match Hari Ini</p>
+                                <p class="text-xs text-slate-400">Kemang Padel Club • Court 2 (Panoramic)</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-court-500/20 text-court-400">3/4 Slot</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-navy-900/90 p-3 rounded-2xl border border-white/5 flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">RZ</div>
+                            <div>
+                                <p class="text-xs font-semibold text-white">Reza Pratama</p>
+                                <p class="text-[11px] text-court-400">Intermediate • Left</p>
+                            </div>
+                        </div>
+                        <div class="bg-navy-900/90 p-3 rounded-2xl border border-white/5 flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500 text-white text-xs font-bold flex items-center justify-center">ND</div>
+                            <div>
+                                <p class="text-xs font-semibold text-white">Nadia Putri</p>
+                                <p class="text-[11px] text-court-400">Intermediate • Right</p>
+                            </div>
+                        </div>
+                        <div class="bg-navy-900/90 p-3 rounded-2xl border border-white/5 flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-purple-500 text-white text-xs font-bold flex items-center justify-center">AK</div>
+                            <div>
+                                <p class="text-xs font-semibold text-white">Arif Kusuma</p>
+                                <p class="text-[11px] text-court-400">Intermediate • Left</p>
+                            </div>
+                        </div>
+                        <button onclick="navigateTo('register')" class="bg-court-500/15 hover:bg-court-500/25 border border-dashed border-court-400 p-3 rounded-2xl flex items-center justify-center gap-1.5 text-court-400 text-xs font-bold transition">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                            <span>Gabung Slot Ini</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-navy-950/60 rounded-2xl p-4 flex items-center justify-between text-xs">
+                        <div>
+                            <p class="text-slate-400">Patungan Lapangan (2 Jam)</p>
+                            <p class="text-base font-bold text-white mt-0.5">Rp 135.000 <span class="text-slate-400 font-normal text-xs">/ orang</span></p>
+                        </div>
+                        <span class="px-3 py-1.5 rounded-xl bg-white/10 text-slate-200 font-medium">19:00 - 21:00 WIB</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="max-w-6xl mx-auto w-full px-6 py-5 border-t border-white/10 text-xs text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-2 relative z-10">
+            <p>© 2026 PadelHub Indonesia — Prototipe Simulasi Komunitas & Reservasi Lapangan.</p>
+            <div class="flex items-center gap-4">
+                <span>Jakarta • Tangerang • Bandung • Bali</span>
+            </div>
+        </footer>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 2. REGISTRASI & PROFIL PEMAIN VIEW                                    -->
+    <!-- ===================================================================== -->
+    <section id="view-register" class="hidden min-h-screen bg-slate-100 py-8 px-4 sm:px-6 flex items-center justify-center">
+        <div class="max-w-2xl w-full bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden fade-in">
+            <!-- Top Banner -->
+            <div class="bg-navy-900 text-white px-6 sm:px-8 py-6 flex items-center justify-between">
+                <div>
+                    <button onclick="navigateTo('landing')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 mb-2 transition">
+                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Kembali ke Beranda
+                    </button>
+                    <h2 class="font-display text-2xl font-bold">Buat Profil Pemain Padel</h2>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">Lengkapi data dirimu untuk mencocokkan level lawan & booking lapangan.</p>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-court-500/20 border border-court-500/40 flex items-center justify-center text-court-400">
+                    <i data-lucide="user-plus" class="w-6 h-6"></i>
+                </div>
+            </div>
+
+            <!-- Registration Form -->
+            <form id="register-form" onsubmit="handleRegisterSubmit(event)" class="p-6 sm:p-8 space-y-6">
+                <!-- Basic Info -->
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Nama Lengkap *</label>
+                        <input type="text" id="reg-name" required placeholder="Contoh: Dimas Anggara" 
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-court-500 focus:ring-2 focus:ring-court-500/20 outline-none text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Email / No. WhatsApp *</label>
+                        <input type="text" id="reg-contact" required placeholder="0812-3456-7890" 
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-court-500 focus:ring-2 focus:ring-court-500/20 outline-none text-sm transition">
+                    </div>
+                </div>
+
+                <!-- Skill Level Selection -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Level Permainan Padel *</label>
+                    <div class="grid sm:grid-cols-3 gap-3" id="level-selector">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="skillLevel" value="Beginner" class="peer sr-only" checked>
+                            <div class="p-4 rounded-2xl border-2 border-slate-200 peer-checked:border-court-500 peer-checked:bg-court-50/60 hover:border-slate-300 transition h-full">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-navy-900">Beginner</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold">1.0 - 2.5</span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">Baru mulai bermain, belajar kontrol bola & pantulan kaca.</p>
+                            </div>
+                        </label>
+                        
+                        <label class="cursor-pointer">
+                            <input type="radio" name="skillLevel" value="Intermediate" class="peer sr-only">
+                            <div class="p-4 rounded-2xl border-2 border-slate-200 peer-checked:border-court-500 peer-checked:bg-court-50/60 hover:border-slate-300 transition h-full">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-navy-900">Intermediate</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold">3.0 - 4.0</span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">Rally konsisten, paham posisi net, bandeja & lob.</p>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer">
+                            <input type="radio" name="skillLevel" value="Advanced / Pro" class="peer sr-only">
+                            <div class="p-4 rounded-2xl border-2 border-slate-200 peer-checked:border-court-500 peer-checked:bg-court-50/60 hover:border-slate-300 transition h-full">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="font-bold text-sm text-navy-900">Advanced / Pro</span>
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-semibold">4.5+</span>
+                                </div>
+                                <p class="text-xs text-slate-500 leading-relaxed">Pemain kompetitif, smash vibora & strategi turnamen.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Hand & Court Position Preferences -->
+                <div class="grid sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Preferensi Tangan</label>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="handPref" value="Tangan Kanan" class="peer sr-only" checked>
+                                <div class="py-3 px-4 rounded-xl border-2 border-slate-200 peer-checked:border-navy-900 peer-checked:bg-navy-900 peer-checked:text-white text-center text-sm font-semibold transition">
+                                    ✋ Kanan (Right)
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="handPref" value="Tangan Kiri (Kidal)" class="peer sr-only">
+                                <div class="py-3 px-4 rounded-xl border-2 border-slate-200 peer-checked:border-navy-900 peer-checked:bg-navy-900 peer-checked:text-white text-center text-sm font-semibold transition">
+                                    🤚 Kiri (Lefty)
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Posisi Favorit di Lapangan</label>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="courtSide" value="Left Side (Revés)" class="peer sr-only" checked>
+                                <div class="py-3 px-3 rounded-xl border-2 border-slate-200 peer-checked:border-court-600 peer-checked:bg-court-600 peer-checked:text-white text-center text-sm font-semibold transition">
+                                    Left Side (Revés)
+                                </div>
+                            </label>
+                            <label class="cursor-pointer">
+                                <input type="radio" name="courtSide" value="Right Side (Drive)" class="peer sr-only">
+                                <div class="py-3 px-3 rounded-xl border-2 border-slate-200 peer-checked:border-court-600 peer-checked:bg-court-600 peer-checked:text-white text-center text-sm font-semibold transition">
+                                    Right Side (Drive)
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <button type="button" onclick="fillSampleProfile()" class="text-xs font-semibold text-court-600 hover:text-court-700 underline">
+                        Isi Otomatis Data Contoh
+                    </button>
+                    <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-court-500 hover:bg-court-600 text-white font-bold text-sm shadow-lg shadow-court-500/25 transition flex items-center justify-center gap-2">
+                        <span>Simpan Profil & Masuk Dashboard</span>
+                        <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 3. DASHBOARD UTAMA & EKSPLORASI VIEW                                  -->
+    <!-- ===================================================================== -->
+    <section id="view-dashboard" class="hidden min-h-screen flex flex-col bg-slate-50">
+        <!-- Top Navigation Bar -->
+        <nav class="bg-navy-900 text-white sticky top-0 z-30 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                <!-- Brand -->
+                <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('booking')">
+                    <div class="w-9 h-9 rounded-xl bg-court-500 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-navy-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M5.6 5.6c3.5 3.5 3.5 9.3 0 12.8"/>
+                            <path d="M18.4 5.6c-3.5 3.5-3.5 9.3 0 12.8"/>
+                        </svg>
+                    </div>
+                    <span class="font-display font-extrabold text-lg tracking-tight">PadelHub <span class="text-court-400">ID</span></span>
+                </div>
+
+                <!-- Desktop Tabs -->
+                <div class="hidden md:flex items-center gap-1 bg-navy-800/80 p-1 rounded-xl border border-white/10">
+                    <button onclick="switchTab('booking')" id="tab-btn-booking" class="nav-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 bg-court-500 text-navy-950">
+                        <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                        <span>Booking Lapangan</span>
+                    </button>
+                    <button onclick="switchTab('openmatch')" id="tab-btn-openmatch" class="nav-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 text-slate-300 hover:text-white">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span>Join Open Match</span>
+                        <span class="px-1.5 py-0.5 text-[10px] rounded-full bg-limepadel text-navy-950 font-extrabold">4</span>
+                    </button>
+                    <button onclick="switchTab('mybookings')" id="tab-btn-mybookings" class="nav-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 text-slate-300 hover:text-white">
+                        <i data-lucide="ticket" class="w-4 h-4"></i>
+                        <span>Jadwal Saya</span>
+                        <span id="my-bookings-badge" class="px-1.5 py-0.5 text-[10px] rounded-full bg-white/20 text-white font-bold">1</span>
+                    </button>
+                </div>
+
+                <!-- Player Profile Badge -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openProfileModal()" class="flex items-center gap-2.5 bg-navy-800 hover:bg-navy-700 border border-white/10 pl-2 pr-3.5 py-1.5 rounded-full transition">
+                        <div id="nav-user-avatar" class="w-7 h-7 rounded-full bg-court-500 text-navy-950 font-extrabold text-xs flex items-center justify-center">
+                            DA
+                        </div>
+                        <div class="text-left hidden sm:block">
+                            <p id="nav-user-name" class="text-xs font-bold leading-none text-white">Dimas Anggara</p>
+                            <p id="nav-user-level" class="text-[10px] text-court-400 font-medium mt-0.5">Intermediate</p>
+                        </div>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Bottom/Sub Navigation -->
+            <div class="md:hidden grid grid-cols-3 border-t border-white/10 bg-navy-950 text-xs">
+                <button onclick="switchTab('booking')" id="mob-tab-booking" class="py-2.5 flex flex-col items-center justify-center gap-1 text-court-400 font-bold border-b-2 border-court-400">
+                    <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                    <span>Booking</span>
+                </button>
+                <button onclick="switchTab('openmatch')" id="mob-tab-openmatch" class="py-2.5 flex flex-col items-center justify-center gap-1 text-slate-400 font-medium">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                    <span>Open Match</span>
+                </button>
+                <button onclick="switchTab('mybookings')" id="mob-tab-mybookings" class="py-2.5 flex flex-col items-center justify-center gap-1 text-slate-400 font-medium relative">
+                    <i data-lucide="ticket" class="w-4 h-4"></i>
+                    <span>Jadwal Saya</span>
+                    <span id="mob-bookings-badge" class="absolute top-1.5 right-6 w-4 h-4 rounded-full bg-court-500 text-navy-950 text-[10px] font-extrabold flex items-center justify-center">1</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Dashboard Content Container -->
+        <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 flex-1">
+            
+            <!-- =============================================================== -->
+            <!-- TAB 1: BOOKING LAPANGAN (COURT RESERVATION)                     -->
+            <!-- =============================================================== -->
+            <div id="tab-content-booking" class="fade-in space-y-6">
+                <!-- Header Banner -->
+                <div class="bg-gradient-to-r from-navy-900 via-navy-800 to-court-900 rounded-3xl p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-limepadel">Reservasi Lapangan Padel</span>
+                        <h1 class="font-display text-2xl sm:text-3xl font-extrabold mt-1">Pilih Klub & Jadwal Bermain</h1>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">Harga transparan per jam, tersedia opsi sewa raket karbon & bola baru.</p>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2.5 rounded-2xl border border-white/10 text-xs">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-limepadel shrink-0"></i>
+                        <span>Promo: Gratis 1 kaleng bola untuk booking 2 jam!</span>
+                    </div>
+                </div>
+
+                <!-- Step 1: Pilih Lokasi Klub -->
+                <div>
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-navy-900 text-white text-xs flex items-center justify-center">1</span>
+                        Pilih Lokasi Klub Padel
+                    </h2>
+                    <div id="clubs-grid" class="grid md:grid-cols-3 gap-4">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- Step 2 & 3: Tanggal, Durasi, Jenis Lapangan & Slot Jam -->
+                <div class="grid lg:grid-cols-12 gap-6 items-start">
+                    <!-- Left Column: Konfigurasi Jadwal -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <!-- Pilih Tanggal & Durasi -->
+                        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm space-y-5">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div>
+                                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                                        <span class="w-5 h-5 rounded-full bg-navy-900 text-white text-xs flex items-center justify-center">2</span>
+                                        Pilih Tanggal & Durasi
+                                    </h3>
+                                </div>
+                                <!-- Durasi Selector -->
+                                <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl">
+                                    <button onclick="setBookingDuration(1)" id="dur-btn-1" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-navy-900 shadow-sm transition">1 Jam</button>
+                                    <button onclick="setBookingDuration(2)" id="dur-btn-2" class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-navy-900 transition">2 Jam (Hemat)</button>
+                                </div>
+                            </div>
+
+                            <!-- Date Pills -->
+                            <div id="date-pills" class="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                                <!-- Rendered via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Pilih Jenis Lapangan & Slot Jam -->
+                        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm space-y-5">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-navy-900 text-white text-xs flex items-center justify-center">3</span>
+                                    Pilih Lapangan & Jam Mulai
+                                </h3>
+                                <div class="flex items-center gap-3 text-xs text-slate-500">
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-court-500"></span> Tersedia</span>
+                                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span> Terisi</span>
+                                </div>
+                            </div>
+
+                            <!-- Court Type Tabs -->
+                            <div id="court-type-tabs" class="flex flex-wrap gap-2">
+                                <!-- Rendered via JS -->
+                            </div>
+
+                            <!-- Time Slots Grid -->
+                            <div id="time-slots-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+                                <!-- Rendered via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Perlengkapan Tambahan (Add-ons) -->
+                        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm space-y-4">
+                            <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-navy-900 text-white text-xs flex items-center justify-center">4</span>
+                                Tambahan Perlengkapan (Opsional)
+                            </h3>
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <!-- Sewa Raket -->
+                                <div class="p-4 rounded-2xl border border-slate-200 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                                            <i data-lucide="swords" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-navy-900">Sewa Raket Padel</p>
+                                            <p class="text-xs text-slate-500">Bullpadel / Babolat • Rp 50.000/raket</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="updateAddon('rackets', -1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 flex items-center justify-center">-</button>
+                                        <span id="addon-rackets-qty" class="w-5 text-center text-sm font-bold">0</span>
+                                        <button onclick="updateAddon('rackets', 1)" class="w-8 h-8 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold flex items-center justify-center">+</button>
+                                    </div>
+                                </div>
+
+                                <!-- Beli Bola -->
+                                <div class="p-4 rounded-2xl border border-slate-200 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                                            <i data-lucide="circle-dot" class="w-5 h-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-navy-900">Tabung Bola Baru (Isi 3)</p>
+                                            <p class="text-xs text-slate-500">Head Padel Pro • Rp 95.000/tabung</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="updateAddon('balls', -1)" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 font-bold text-slate-700 flex items-center justify-center">-</button>
+                                        <span id="addon-balls-qty" class="w-5 text-center text-sm font-bold">0</span>
+                                        <button onclick="updateAddon('balls', 1)" class="w-8 h-8 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold flex items-center justify-center">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Sticky Booking Summary Card -->
+                    <div class="lg:col-span-4 lg:sticky lg:top-24">
+                        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg space-y-5">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                                <h3 class="font-display font-bold text-lg text-navy-900">Ringkasan Reservasi</h3>
+                                <span class="px-2.5 py-1 rounded-full bg-court-50 text-court-700 text-xs font-bold">Instant Confirm</span>
+                            </div>
+
+                            <div id="booking-summary-details" class="space-y-3 text-sm">
+                                <!-- Rendered dynamically -->
+                            </div>
+
+                            <div class="pt-3 border-t border-dashed border-slate-200 space-y-2">
+                                <div class="flex justify-between text-xs text-slate-500">
+                                    <span>Biaya Layanan Aplikasi</span>
+                                    <span>Rp 5.000</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-1">
+                                    <span class="font-bold text-slate-700">Total Pembayaran</span>
+                                    <span id="booking-total-price" class="font-display text-xl font-extrabold text-court-600">Rp 0</span>
+                                </div>
+                            </div>
+
+                            <button onclick="proceedToCheckout('court')" id="btn-proceed-booking" class="w-full py-4 rounded-2xl bg-court-500 hover:bg-court-600 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-sm shadow-lg shadow-court-500/20 transition flex items-center justify-center gap-2">
+                                <span>Lanjut ke Pembayaran</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- TAB 2: JOIN OPEN MATCH (CARI LAWAN / MABAR)                     -->
+            <!-- =============================================================== -->
+            <div id="tab-content-openmatch" class="hidden fade-in space-y-6">
+                <!-- Header & Create Match CTA -->
+                <div class="bg-navy-900 rounded-3xl p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-court-400">Komunitas Mabar Padel</span>
+                        <h1 class="font-display text-2xl sm:text-3xl font-extrabold mt-1">Join Open Match</h1>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">Gabung permainan bersama pemain lain yang selevel. Patungan lapangan lebih hemat & seru!</p>
+                    </div>
+                    <button onclick="openCreateMatchModal()" class="px-5 py-3 rounded-2xl bg-limepadel hover:bg-lime-300 text-navy-950 font-bold text-sm transition flex items-center justify-center gap-2 shrink-0 shadow-lg">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        <span>Buat Sesi Open Match</span>
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div class="flex flex-wrap items-center gap-2" id="match-level-filters">
+                        <span class="text-xs font-bold text-slate-500 mr-1">Filter Level:</span>
+                        <button onclick="filterOpenMatches('ALL')" class="match-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-navy-900 text-white transition" data-level="ALL">Semua Level</button>
+                        <button onclick="filterOpenMatches('Beginner')" class="match-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition" data-level="Beginner">Beginner</button>
+                        <button onclick="filterOpenMatches('Intermediate')" class="match-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition" data-level="Intermediate">Intermediate</button>
+                        <button onclick="filterOpenMatches('Advanced / Pro')" class="match-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition" data-level="Advanced / Pro">Advanced / Pro</button>
+                    </div>
+                    <div class="text-xs text-slate-500">
+                        Menampilkan <span id="open-match-count" class="font-bold text-navy-900">4</span> sesi tersedia
+                    </div>
+                </div>
+
+                <!-- Open Matches Cards Grid -->
+                <div id="open-matches-grid" class="grid md:grid-cols-2 gap-5">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- TAB 3: JADWAL SAYA (MY BOOKINGS & QR TICKETS)                   -->
+            <!-- =============================================================== -->
+            <div id="tab-content-mybookings" class="hidden fade-in space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="font-display text-2xl sm:text-3xl font-extrabold text-navy-900">Jadwal & Tiket Saya</h1>
+                        <p class="text-sm text-slate-500 mt-0.5">Tunjukkan kode QR kepada resepsionis klub saat check-in di lapangan.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="switchTab('booking')" class="px-4 py-2.5 rounded-xl bg-navy-900 text-white text-xs font-bold hover:bg-navy-800 transition flex items-center gap-1.5">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Booking Baru
+                        </button>
+                    </div>
+                </div>
+
+                <div id="my-bookings-list" class="grid md:grid-cols-2 gap-5">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+
+        </main>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 4. MODAL CHECKOUT & SIMULASI PEMBAYARAN                               -->
+    <!-- ===================================================================== -->
+    <div id="modal-checkout" class="hidden fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl pop-in my-auto">
+            <!-- Modal Header -->
+            <div class="bg-navy-900 text-white px-6 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-court-500/20 text-court-400 flex items-center justify-center">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-lg leading-tight">Checkout & Pembayaran</h3>
+                        <p class="text-xs text-slate-400">Selesaikan pembayaran untuk mengamankan slotmu</p>
+                    </div>
+                </div>
+                <button onclick="closeCheckoutModal()" class="p-2 rounded-xl hover:bg-white/10 text-slate-400 hover:text-white transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Step A: Payment Method & Order Summary -->
+            <div id="checkout-step-form" class="p-6 space-y-5">
+                <!-- Order Summary Box -->
+                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span id="checkout-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-court-100 text-court-700">Court Reservation</span>
+                        <span id="checkout-order-id" class="text-xs font-mono text-slate-400">#PDL-8821</span>
+                    </div>
+                    <h4 id="checkout-title" class="font-bold text-base text-navy-900">Kemang Padel Club — Court 1</h4>
+                    <p id="checkout-subtitle" class="text-xs text-slate-600">Selasa, 17 Nov 2026 • 19:00 - 21:00 (2 Jam)</p>
+                    <div id="checkout-breakdown" class="pt-2 border-t border-slate-200 text-xs space-y-1 text-slate-600">
+                        <!-- Breakdown lines -->
+                    </div>
+                    <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
+                        <span class="font-bold text-sm text-navy-900">Total Tagihan</span>
+                        <span id="checkout-total" class="font-display text-xl font-extrabold text-court-600">Rp 505.000</span>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">Pilih Metode Pembayaran</label>
+                    <div class="space-y-2.5">
+                        <label class="cursor-pointer block">
+                            <input type="radio" name="paymentMethod" value="QRIS Instan (GoPay / OVO / BCA)" class="peer sr-only" checked>
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-court-500 peer-checked:bg-court-50/40 flex items-center justify-between transition">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-navy-900 text-white font-extrabold text-xs flex items-center justify-center">QRIS</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-navy-900">QRIS Instan</p>
+                                        <p class="text-xs text-slate-500">Scan via BCA Mobile, GoPay, OVO, Dana</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold text-court-600">Otomatis</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer block">
+                            <input type="radio" name="paymentMethod" value="BCA Virtual Account" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-court-500 peer-checked:bg-court-50/40 flex items-center justify-between transition">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-600 text-white font-extrabold text-xs flex items-center justify-center">BCA</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-navy-900">BCA Virtual Account</p>
+                                        <p class="text-xs text-slate-500">Verifikasi cepat tanpa upload bukti</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer block">
+                            <input type="radio" name="paymentMethod" value="Mandiri / BNI Virtual Account" class="peer sr-only">
+                            <div class="p-3.5 rounded-2xl border-2 border-slate-200 peer-checked:border-court-500 peer-checked:bg-court-50/40 flex items-center justify-between transition">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-white font-extrabold text-xs flex items-center justify-center">VA</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-navy-900">Mandiri / BNI Virtual Account</p>
+                                        <p class="text-xs text-slate-500">Transfer antar bank online 24 jam</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button onclick="simulatePaymentProcess()" class="w-full py-4 rounded-2xl bg-court-500 hover:bg-court-600 text-white font-bold text-sm shadow-lg shadow-court-500/25 transition flex items-center justify-center gap-2">
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+                    <span>Bayar Sekarang & Terbitkan Tiket</span>
+                </button>
+            </div>
+
+            <!-- Step B: Processing Animation -->
+            <div id="checkout-step-processing" class="hidden p-10 text-center space-y-4">
+                <div class="w-16 h-16 rounded-full border-4 border-slate-100 border-t-court-500 animate-spin mx-auto"></div>
+                <h4 class="font-display font-bold text-lg text-navy-900">Memverifikasi Pembayaran...</h4>
+                <p class="text-xs text-slate-500 max-w-xs mx-auto">Mohon tunggu sebentar, sistem sedang mengonfirmasi slot lapanganmu secara real-time.</p>
+            </div>
+
+            <!-- Step C: Success Animation -->
+            <div id="checkout-step-success" class="hidden p-8 text-center space-y-5 pop-in">
+                <div class="w-20 h-20 rounded-full bg-court-100 text-court-600 flex items-center justify-center mx-auto shadow-inner">
+                    <i data-lucide="check-circle-2" class="w-12 h-12"></i>
+                </div>
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-court-50 text-court-700 text-xs font-bold">Pembayaran Berhasil!</span>
+                    <h4 class="font-display font-extrabold text-2xl text-navy-900 mt-2">Slot Lapangan Terkunci!</h4>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">E-Ticket & QR Code telah ditambahkan ke halaman <strong>Jadwal Saya</strong>.</p>
+                </div>
+                <button onclick="finishCheckoutAndViewTicket()" class="w-full py-3.5 rounded-2xl bg-navy-900 hover:bg-navy-800 text-white font-bold text-sm transition flex items-center justify-center gap-2">
+                    <i data-lucide="ticket" class="w-4 h-4 text-limepadel"></i>
+                    <span>Lihat Tiket QR di Jadwal Saya</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- 5. MODAL BUAT SESI OPEN MATCH BARU                                    -->
+    <!-- ===================================================================== -->
+    <div id="modal-create-match" class="hidden fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl pop-in">
+            <div class="bg-navy-900 text-white px-6 py-4 flex items-center justify-between">
+                <h3 class="font-display font-bold text-lg">Buat Sesi Open Match</h3>
+                <button onclick="closeCreateMatchModal()" class="p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form onsubmit="handleCreateMatchSubmit(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Klub / Lokasi Lapangan</label>
+                    <select id="new-match-club" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium outline-none focus:border-court-500">
+                        <option value="Kemang Padel Club">Kemang Padel Club (Jakarta Selatan)</option>
+                        <option value="BSD Padel Arena">BSD Padel Arena (Tangerang)</option>
+                        <option value="Senayan Padel Court">Senayan Padel Court (Jakarta Pusat)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Waktu Main</label>
+                        <input type="text" id="new-match-time" required value="Besok, 20:00 - 22:00" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:border-court-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Target Level</label>
+                        <select id="new-match-level" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium outline-none focus:border-court-500">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate" selected>Intermediate</option>
+                            <option value="Advanced / Pro">Advanced / Pro</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Biaya Patungan per Orang (Rp)</label>
+                    <input type="number" id="new-match-fee" required value="130000" step="5000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-bold outline-none focus:border-court-500">
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-court-500 hover:bg-court-600 text-white font-bold text-sm shadow-lg transition">
+                    Publikasikan Open Match
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- 6. MODAL PROFIL PEMAIN                                                -->
+    <!-- ===================================================================== -->
+    <div id="modal-profile" class="hidden fixed inset-0 z-50 bg-navy-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden shadow-2xl pop-in">
+            <div class="bg-navy-900 text-white p-6 text-center relative">
+                <button onclick="closeProfileModal()" class="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-white/10 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <div id="modal-prof-avatar" class="w-16 h-16 rounded-2xl bg-court-500 text-navy-950 font-display font-extrabold text-2xl flex items-center justify-center mx-auto shadow-lg">
+                    DA
+                </div>
+                <h3 id="modal-prof-name" class="font-display font-bold text-xl mt-3">Dimas Anggara</h3>
+                <p id="modal-prof-contact" class="text-xs text-slate-400 mt-0.5">0812-3456-7890</p>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-3 text-center">
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <p class="text-[11px] text-slate-400 uppercase font-bold">Level Pemain</p>
+                        <p id="modal-prof-level" class="text-sm font-bold text-court-600 mt-0.5">Intermediate</p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <p class="text-[11px] text-slate-400 uppercase font-bold">Preferensi Tangan</p>
+                        <p id="modal-prof-hand" class="text-sm font-bold text-navy-900 mt-0.5">Tangan Kanan</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
+                    <p class="text-[11px] text-slate-400 uppercase font-bold">Posisi Lapangan Favorit</p>
+                    <p id="modal-prof-side" class="text-sm font-bold text-navy-900 mt-0.5">Left Side (Revés)</p>
+                </div>
+                <div class="pt-2 flex flex-col gap-2">
+                    <button onclick="closeProfileModal(); navigateTo('register');" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy-900 font-semibold text-xs transition">
+                        Edit Profil Pemain
+                    </button>
+                    <button onclick="closeProfileModal(); navigateTo('landing');" class="w-full py-2.5 rounded-xl text-rose-600 hover:bg-rose-50 font-semibold text-xs transition">
+                        Keluar / Kembali ke Landing Page
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT SIMULATION ENGINE                                          -->
+    <!-- ===================================================================== -->
+    <script>
+        // --- 1. INITIAL MOCK DATA & STATE ---
+        const CLUBS_DATA = [
+            {
+                id: 'kemang',
+                name: 'Kemang Padel Club',
+                area: 'Kemang, Jakarta Selatan',
+                rating: '4.9',
+                facilities: ['Indoor AC', 'Panoramic Glass', 'Shower & Cafe'],
+                courts: [
+                    { id: 'c1', name: 'Court 1 — Indoor Panoramic', type: 'Indoor', pricePerHour: 280000 },
+                    { id: 'c2', name: 'Court 2 — Indoor Standard', type: 'Indoor', pricePerHour: 250000 },
+                    { id: 'c3', name: 'Court 3 — Semi-Outdoor', type: 'Outdoor', pricePerHour: 220000 }
+                ]
+            },
+            {
+                id: 'bsd',
+                name: 'BSD Padel Arena',
+                area: 'BSD City, Tangerang Selatan',
+                rating: '4.8',
+                facilities: ['Full Outdoor', 'Pro Turf', 'Free Parking'],
+                courts: [
+                    { id: 'b1', name: 'Center Court — Panoramic', type: 'Outdoor', pricePerHour: 240000 },
+                    { id: 'b2', name: 'Court B — Outdoor Club', type: 'Outdoor', pricePerHour: 200000 }
+                ]
+            },
+            {
+                id: 'senayan',
+                name: 'Senayan Padel Court',
+                area: 'Gelora Senayan, Jakarta Pusat',
+                rating: '5.0',
+                facilities: ['VIP Lounge', 'Indoor Pro', 'Pro Shop'],
+                courts: [
+                    { id: 's1', name: 'VIP Arena — WPT Panoramic', type: 'Indoor', pricePerHour: 350000 },
+                    { id: 's2', name: 'Court 2 — Indoor Glass', type: 'Indoor', pricePerHour: 300000 }
+                ]
+            }
+        ];
+
+        const TIME_SLOTS = [
+            { time: '08:00', available: true },
+            { time: '09:00', available: true },
+            { time: '10:00', available: false },
+            { time: '11:00', available: true },
+            { time: '16:00', available: true },
+            { time: '17:00', available: false },
+            { time: '18:00', available: true },
+            { time: '19:00', available: true },
+            { time: '20:00', available: true },
+            { time: '21:00', available: false }
+        ];
+
+        // Generate next 7 days
+        const DATES_DATA = Array.from({ length: 7 }, (_, i) => {
+            const d = new Date();
+            d.setDate(d.getDate() + i);
+            const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            return {
+                id: i,
+                dayName: i === 0 ? 'Hari Ini' : days[d.getDay()],
+                dateNum: d.getDate(),
+                monthName: months[d.getMonth()],
+                fullLabel: `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`
+            };
+        });
+
+        // Application State
+        let state = {
+            user: {
+                name: 'Dimas Anggara',
+                contact: '0812-8899-4411',
+                level: 'Intermediate',
+                hand: 'Tangan Kanan',
+                side: 'Left Side (Revés)',
+                initials: 'DA'
+            },
+            booking: {
+                clubId: 'kemang',
+                dateIdx: 0,
+                duration: 2,
+                courtId: 'c1',
+                selectedTime: '19:00',
+                rackets: 0,
+                balls: 0
+            },
+            openMatches: [
+                {
+                    id: 'om-1',
+                    club: 'Kemang Padel Club',
+                    court: 'Court 1 — Indoor Panoramic',
+                    time: 'Hari Ini, 20:00 - 22:00 WIB',
+                    level: 'Intermediate',
+                    feePerPerson: 145000,
+                    maxPlayers: 4,
+                    players: [
+                        { name: 'Reza Pratama', level: 'Intermediate', side: 'Left', initials: 'RP' },
+                        { name: 'Nadia Putri', level: 'Intermediate', side: 'Right', initials: 'NP' },
+                        { name: 'Arif Kusuma', level: 'Intermediate', side: 'Left', initials: 'AK' }
+                    ]
+                },
+                {
+                    id: 'om-2',
+                    club: 'BSD Padel Arena',
+                    court: 'Center Court — Panoramic',
+                    time: 'Besok, 18:00 - 20:00 WIB',
+                    level: 'Beginner',
+                    feePerPerson: 120000,
+                    maxPlayers: 4,
+                    players: [
+                        { name: 'Sinta Bella', level: 'Beginner', side: 'Right', initials: 'SB' },
+                        { name: 'Kevin Tan', level: 'Beginner', side: 'Left', initials: 'KT' }
+                    ]
+                },
+                {
+                    id: 'om-3',
+                    club: 'Senayan Padel Court',
+                    court: 'VIP Arena — WPT Panoramic',
+                    time: 'Besok, 19:00 - 21:00 WIB',
+                    level: 'Advanced / Pro',
+                    feePerPerson: 175000,
+                    maxPlayers: 4,
+                    players: [
+                        { name: 'Marco Wijaya', level: 'Advanced / Pro', side: 'Left', initials: 'MW' },
+                        { name: 'Dina Mariana', level: 'Advanced / Pro', side: 'Right', initials: 'DM' },
+                        { name: 'Bima Sakti', level: 'Advanced / Pro', side: 'Right', initials: 'BS' }
+                    ]
+                },
+                {
+                    id: 'om-4',
+                    club: 'Kemang Padel Club',
+                    court: 'Court 3 — Semi-Outdoor',
+                    time: 'Kamis, 17:00 - 19:00 WIB',
+                    level: 'Beginner',
+                    feePerPerson: 110000,
+                    maxPlayers: 4,
+                    players: [
+                        { name: 'Tara Basro', level: 'Beginner', side: 'Left', initials: 'TB' }
+                    ]
+                }
+            ],
+            matchFilter: 'ALL',
+            myBookings: [
+                {
+                    ticketId: 'PDL-2026-904',
+                    type: 'Open Match',
+                    title: 'Senayan Padel Court — Court 2',
+                    schedule: 'Sabtu, 21 Nov 2026 • 09:00 - 11:00 WIB',
+                    details: 'Sesi Mabar Intermediate • 4/4 Pemain Terkonfirmasi',
+                    totalPaid: 155000,
+                    paymentMethod: 'QRIS Instan',
+                    status: 'LUNAS'
+                }
+            ],
+            pendingCheckout: null
+        };
+
+        // --- 2. HELPER FUNCTIONS ---
+        function formatRupiah(num) {
+            return 'Rp ' + num.toLocaleString('id-ID');
+        }
+
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colors = type === 'success' 
+                ? 'bg-navy-900 text-white border-court-500' 
+                : 'bg-rose-900 text-white border-rose-500';
+            const icon = type === 'success' ? 'check-circle-2' : 'info';
+            const iconColor = type === 'success' ? 'text-court-400' : 'text-rose-400';
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3.5 rounded-2xl border-l-4 shadow-xl ${colors} pop-in`;
+            toast.innerHTML = `
+                <i data-lucide="${icon}" class="w-5 h-5 ${iconColor} shrink-0"></i>
+                <p class="text-xs sm:text-sm font-medium leading-snug">${message}</p>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // --- 3. NAVIGATION & ONBOARDING ---
+        function navigateTo(viewName) {
+            ['landing', 'register', 'dashboard'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+            });
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (viewName === 'dashboard') {
+                updateUserUI();
+                renderAllDashboard();
+            }
+            lucide.createIcons();
+        }
+
+        function quickDemoLogin() {
+            state.user = {
+                name: 'Dimas Anggara',
+                contact: '0812-8899-4411',
+                level: 'Intermediate',
+                hand: 'Tangan Kanan',
+                side: 'Left Side (Revés)',
+                initials: 'DA'
+            };
+            showToast('Masuk sebagai Pemain Demo: Dimas Anggara (Intermediate)');
+            navigateTo('dashboard');
+        }
+
+        function fillSampleProfile() {
+            document.getElementById('reg-name').value = 'Raka Mahendra';
+            document.getElementById('reg-contact').value = 'raka.padel@gmail.com / 0813-7788-9900';
+            document.querySelector('input[name="skillLevel"][value="Intermediate"]').checked = true;
+            showToast('Data profil contoh berhasil diisi!');
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const contact = document.getElementById('reg-contact').value.trim();
+            const level = document.querySelector('input[name="skillLevel"]:checked').value;
+            const hand = document.querySelector('input[name="handPref"]:checked').value;
+            const side = document.querySelector('input[name="courtSide"]:checked').value;
+
+            state.user = {
+                name,
+                contact,
+                level,
+                hand,
+                side,
+                initials: getInitials(name)
+            };
+
+            showToast(`Selamat datang, ${name}! Profil ${level} siap digunakan.`);
+            navigateTo('dashboard');
+        }
+
+        function updateUserUI() {
+            document.getElementById('nav-user-avatar').textContent = state.user.initials;
+            document.getElementById('nav-user-name').textContent = state.user.name;
+            document.getElementById('nav-user-level').textContent = state.user.level;
+
+            document.getElementById('modal-prof-avatar').textContent = state.user.initials;
+            document.getElementById('modal-prof-name').textContent = state.user.name;
+            document.getElementById('modal-prof-contact').textContent = state.user.contact;
+            document.getElementById('modal-prof-level').textContent = state.user.level;
+            document.getElementById('modal-prof-hand').textContent = state.user.hand;
+            document.getElementById('modal-prof-side').textContent = state.user.side;
+        }
+
+        function switchTab(tabName) {
+            // Hide all tab contents
+            ['booking', 'openmatch', 'mybookings'].forEach(t => {
+                document.getElementById(`tab-content-${t}`).classList.add('hidden');
+                
+                // Desktop button styling
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tabName) {
+                    btn.className = 'nav-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 bg-court-500 text-navy-950';
+                } else {
+                    btn.className = 'nav-tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2 text-slate-300 hover:text-white';
+                }
+
+                // Mobile button styling
+                const mobBtn = document.getElementById(`mob-tab-${t}`);
+                if (t === tabName) {
+                    mobBtn.className = 'py-2.5 flex flex-col items-center justify-center gap-1 text-court-400 font-bold border-b-2 border-court-400 relative';
+                } else {
+                    mobBtn.className = 'py-2.5 flex flex-col items-center justify-center gap-1 text-slate-400 font-medium relative';
+                }
+            });
+
+            document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // --- 4. COURT BOOKING RENDERING & LOGIC ---
+        function renderAllDashboard() {
+            renderClubs();
+            renderDates();
+            renderCourtsAndSlots();
+            updateBookingSummary();
+            renderOpenMatches();
+            renderMyBookings();
+        }
+
+        function renderClubs() {
+            const container = document.getElementById('clubs-grid');
+            container.innerHTML = CLUBS_DATA.map(club => {
+                const isSelected = club.id === state.booking.clubId;
+                const minPrice = Math.min(...club.courts.map(c => c.pricePerHour));
+                return `
+                    <div onclick="selectClub('${club.id}')" class="cursor-pointer rounded-3xl p-5 border-2 transition relative overflow-hidden ${isSelected ? 'border-court-500 bg-white shadow-md' : 'border-slate-200/80 bg-white hover:border-slate-300'}">
+                        ${isSelected ? '<div class="absolute top-3 right-3 w-6 h-6 rounded-full bg-court-500 text-white flex items-center justify-center"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>' : ''}
+                        <div class="flex items-center gap-2 text-xs font-bold text-amber-500 mb-1.5">
+                            <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                            <span>${club.rating}</span>
+                            <span class="text-slate-300">•</span>
+                            <span class="text-slate-500 font-medium">${club.courts.length} Lapangan</span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-navy-900">${club.name}</h3>
+                        <p class="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-court-600"></i> ${club.area}
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 mt-3">
+                            ${club.facilities.map(f => `<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium">${f}</span>`).join('')}
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-[11px] text-slate-400">Mulai dari</span>
+                            <span class="text-sm font-extrabold text-navy-900">${formatRupiah(minPrice)}<span class="text-xs font-normal text-slate-500">/jam</span></span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function selectClub(clubId) {
+            state.booking.clubId = clubId;
+            const club = CLUBS_DATA.find(c => c.id === clubId);
+            state.booking.courtId = club.courts[0].id;
+            renderClubs();
+            renderCourtsAndSlots();
+            updateBookingSummary();
+        }
+
+        function renderDates() {
+            const container = document.getElementById('date-pills');
+            container.innerHTML = DATES_DATA.map(d => {
+                const isSelected = d.id === state.booking.dateIdx;
+                return `
+                    <button onclick="selectDate(${d.id})" class="py-2.5 px-2 rounded-2xl border-2 text-center transition ${isSelected ? 'border-navy-900 bg-navy-900 text-white shadow-sm' : 'border-slate-200 bg-slate-50/50 hover:border-slate-300 text-slate-700'}">
+                        <p class="text-[10px] uppercase font-bold ${isSelected ? 'text-court-400' : 'text-slate-400'}">${d.dayName}</p>
+                        <p class="font-display text-lg font-extrabold leading-tight my-0.5">${d.dateNum}</p>
+                        <p class="text-[11px] ${isSelected ? 'text-slate-300' : 'text-slate-500'}">${d.monthName}</p>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectDate(idx) {
+            state.booking.dateIdx = idx;
+            renderDates();
+            updateBookingSummary();
+        }
+
+        function setBookingDuration(dur) {
+            state.booking.duration = dur;
+            document.getElementById('dur-btn-1').className = dur === 1 
+                ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-navy-900 shadow-sm transition' 
+                : 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-navy-900 transition';
+            document.getElementById('dur-btn-2').className = dur === 2 
+                ? 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-white text-navy-900 shadow-sm transition' 
+                : 'px-3.5 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-navy-900 transition';
+            updateBookingSummary();
+        }
+
+        function renderCourtsAndSlots() {
+            const club = CLUBS_DATA.find(c => c.id === state.booking.clubId);
+            
+            // Render court tabs
+            const courtTabs = document.getElementById('court-type-tabs');
+            courtTabs.innerHTML = club.courts.map(court => {
+                const isSelected = court.id === state.booking.courtId;
+                return `
+                    <button onclick="selectCourt('${court.id}')" class="px-4 py-2.5 rounded-xl text-xs font-bold border-2 transition flex items-center gap-2 ${isSelected ? 'border-court-500 bg-court-50 text-court-800' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'}">
+                        <span>${court.name}</span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] ${court.type === 'Indoor' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}">${court.type}</span>
+                    </button>
+                `;
+            }).join('');
+
+            // Render time slots
+            const slotsGrid = document.getElementById('time-slots-grid');
+            slotsGrid.innerHTML = TIME_SLOTS.map(slot => {
+                const isSelected = slot.time === state.booking.selectedTime;
+                if (!slot.available) {
+                    return `
+                        <button disabled class="py-3 px-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-400 text-xs font-semibold cursor-not-allowed flex flex-col items-center">
+                            <span class="line-through">${slot.time} WIB</span>
+                            <span class="text-[10px] mt-0.5">Penuh</span>
+                        </button>
+                    `;
+                }
+                return `
+                    <button onclick="selectTimeSlot('${slot.time}')" class="py-3 px-3 rounded-xl border-2 text-xs font-bold transition flex flex-col items-center ${isSelected ? 'border-court-500 bg-court-500 text-white shadow-md shadow-court-500/20' : 'border-slate-200 bg-white hover:border-court-400 text-navy-900'}">
+                        <span>${slot.time} WIB</span>
+                        <span class="text-[10px] font-medium mt-0.5 ${isSelected ? 'text-navy-950 font-bold' : 'text-court-600'}">Tersedia</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function selectCourt(courtId) {
+            state.booking.courtId = courtId;
+            renderCourtsAndSlots();
+            updateBookingSummary();
+        }
+
+        function selectTimeSlot(time) {
+            state.booking.selectedTime = time;
+            renderCourtsAndSlots();
+            updateBookingSummary();
+        }
+
+        function updateAddon(type, delta) {
+            const nextVal = state.booking[type] + delta;
+            if (nextVal >= 0 && nextVal <= 8) {
+                state.booking[type] = nextVal;
+                document.getElementById(`addon-${type}-qty`).textContent = nextVal;
+                updateBookingSummary();
+            }
+        }
+
+        function calculateBookingTotals() {
+            const club = CLUBS_DATA.find(c => c.id === state.booking.clubId);
+            const court = club.courts.find(c => c.id === state.booking.courtId);
+            const dateObj = DATES_DATA[state.booking.dateIdx];
+
+            const startHour = parseInt(state.booking.selectedTime.split(':')[0], 10);
+            const endHour = startHour + state.booking.duration;
+            const timeRange = `${state.booking.selectedTime} - ${endHour.toString().padStart(2, '0')}:00 WIB`;
+
+            const courtSubtotal = court.pricePerHour * state.booking.duration;
+            const racketsSubtotal = state.booking.rackets * 50000;
+            const ballsSubtotal = state.booking.balls * 95000;
+            const serviceFee = 5000;
+            const grandTotal = courtSubtotal + racketsSubtotal + ballsSubtotal + serviceFee;
+
+            return {
+                club, court, dateObj, timeRange,
+                courtSubtotal, racketsSubtotal, ballsSubtotal, serviceFee, grandTotal
+            };
+        }
+
+        function updateBookingSummary() {
+            const calc = calculateBookingTotals();
+            const detailsEl = document.getElementById('booking-summary-details');
+            
+            detailsEl.innerHTML = `
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-1">
+                    <p class="font-bold text-navy-900">${calc.club.name}</p>
+                    <p class="text-xs text-court-700 font-semibold">${calc.court.name}</p>
+                    <p class="text-xs text-slate-500 flex items-center gap-1.5 pt-1">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${calc.dateObj.fullLabel}
+                    </p>
+                    <p class="text-xs text-slate-500 flex items-center gap-1.5">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${calc.timeRange} (${state.booking.duration} Jam)
+                    </p>
+                </div>
+                <div class="space-y-1.5 pt-1 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">Sewa Lapangan (${state.booking.duration} jam)</span>
+                        <span class="font-semibold text-navy-900">${formatRupiah(calc.courtSubtotal)}</span>
+                    </div>
+                    ${state.booking.rackets > 0 ? `
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">Sewa Raket (${state.booking.rackets}x)</span>
+                        <span class="font-semibold text-navy-900">${formatRupiah(calc.racketsSubtotal)}</span>
+                    </div>` : ''}
+                    ${state.booking.balls > 0 ? `
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">Tabung Bola Baru (${state.booking.balls}x)</span>
+                        <span class="font-semibold text-navy-900">${formatRupiah(calc.ballsSubtotal)}</span>
+                    </div>` : ''}
+                </div>
+            `;
+
+            document.getElementById('booking-total-price').textContent = formatRupiah(calc.grandTotal);
+            lucide.createIcons();
+        }
+
+        // --- 5. OPEN MATCH RENDERING & JOIN LOGIC ---
+        function filterOpenMatches(level) {
+            state.matchFilter = level;
+            document.querySelectorAll('.match-filter-btn').forEach(btn => {
+                if (btn.dataset.level === level) {
+                    btn.className = 'match-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-navy-900 text-white transition';
+                } else {
+                    btn.className = 'match-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+                }
+            });
+            renderOpenMatches();
+        }
+
+        function renderOpenMatches() {
+            const container = document.getElementById('open-matches-grid');
+            const filtered = state.matchFilter === 'ALL' 
+                ? state.openMatches 
+                : state.openMatches.filter(m => m.level === state.matchFilter);
+
+            document.getElementById('open-match-count').textContent = filtered.length;
+
+            container.innerHTML = filtered.map(match => {
+                const isJoined = match.players.some(p => p.name === state.user.name);
+                const isFull = match.players.length >= match.maxPlayers;
+                const remainingSlots = match.maxPlayers - match.players.length;
+
+                const levelBadgeColor = match.level === 'Beginner' 
+                    ? 'bg-emerald-100 text-emerald-700' 
+                    : match.level === 'Intermediate' 
+                        ? 'bg-blue-100 text-blue-700' 
+                        : 'bg-amber-100 text-amber-700';
+
+                // Render 4 player slots
+                const slotsHtml = Array.from({ length: 4 }, (_, idx) => {
+                    const player = match.players[idx];
+                    if (player) {
+                        const isMe = player.name === state.user.name;
+                        return `
+                            <div class="flex items-center gap-2 p-2.5 rounded-xl border ${isMe ? 'bg-court-50 border-court-400' : 'bg-slate-50 border-slate-100'}">
+                                <div class="w-8 h-8 rounded-full ${isMe ? 'bg-court-500 text-white' : 'bg-navy-800 text-white'} text-xs font-bold flex items-center justify-center shrink-0">
+                                    ${player.initials}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-xs font-bold text-navy-900 truncate">${player.name} ${isMe ? '(Kamu)' : ''}</p>
+                                    <p class="text-[10px] text-slate-500">${player.side}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    return `
+                        <div class="flex items-center justify-center gap-1.5 p-2.5 rounded-xl border border-dashed border-slate-300 text-slate-400 text-xs">
+                            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i>
+                            <span>Slot Kosong</span>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-5">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="px-2.5 py-1 rounded-full text-xs font-bold ${levelBadgeColor}">${match.level}</span>
+                                <span class="text-xs font-bold ${isFull ? 'text-slate-400' : 'text-court-600'}">
+                                    ${match.players.length}/${match.maxPlayers} Pemain (${isFull ? 'Penuh' : `Sisa ${remainingSlots} slot`})
+                                </span>
+                            </div>
+                            <h3 class="font-display font-bold text-lg text-navy-900">${match.club}</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">${match.court} • <span class="font-semibold text-slate-700">${match.time}</span></p>
+
+                            <div class="grid grid-cols-2 gap-2.5 mt-4">
+                                ${slotsHtml}
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                            <div>
+                                <p class="text-[11px] text-slate-400">Patungan per Orang</p>
+                                <p class="font-display text-lg font-extrabold text-navy-900">${formatRupiah(match.feePerPerson)}</p>
+                            </div>
+                            ${isJoined ? `
+                                <button disabled class="px-5 py-3 rounded-xl bg-court-100 text-court-700 font-bold text-xs flex items-center gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4"></i> Sudah Bergabung
+                                </button>
+                            ` : isFull ? `
+                                <button disabled class="px-5 py-3 rounded-xl bg-slate-100 text-slate-400 font-bold text-xs">
+                                    Match Penuh
+                                </button>
+                            ` : `
+                                <button onclick="proceedToCheckout('openmatch', '${match.id}')" class="px-5 py-3 rounded-xl bg-navy-900 hover:bg-court-600 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5">
+                                    <span>Join Match</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function openCreateMatchModal() {
+            document.getElementById('modal-create-match').classList.remove('hidden');
+        }
+
+        function closeCreateMatchModal() {
+            document.getElementById('modal-create-match').classList.add('hidden');
+        }
+
+        function handleCreateMatchSubmit(e) {
+            e.preventDefault();
+            const club = document.getElementById('new-match-club').value;
+            const time = document.getElementById('new-match-time').value;
+            const level = document.getElementById('new-match-level').value;
+            const fee = parseInt(document.getElementById('new-match-fee').value, 10);
+
+            const newMatch = {
+                id: 'om-' + Date.now(),
+                club,
+                court: 'Court 1 — Panoramic',
+                time: time + ' WIB',
+                level,
+                feePerPerson: fee,
+                maxPlayers: 4,
+                players: [
+                    {
+                        name: state.user.name,
+                        level: state.user.level,
+                        side: state.user.side.includes('Left') ? 'Left' : 'Right',
+                        initials: state.user.initials
+                    }
+                ]
+            };
+
+            state.openMatches.unshift(newMatch);
+            closeCreateMatchModal();
+            filterOpenMatches('ALL');
+            showToast('Sesi Open Match baru berhasil dipublikasikan!');
+        }
+
+        // --- 6. CHECKOUT & PAYMENT SIMULATION ---
+        function proceedToCheckout(type, matchId = null) {
+            const orderId = '#PDL-' + Math.floor(1000 + Math.random() * 9000);
+            
+            if (type === 'court') {
+                const calc = calculateBookingTotals();
+                state.pendingCheckout = {
+                    type: 'Court Reservation',
+                    orderId,
+                    title: `${calc.club.name} — ${calc.court.name}`,
+                    schedule: `${calc.dateObj.fullLabel} • ${calc.timeRange}`,
+                    details: `Durasi ${state.booking.duration} Jam` + 
+                        (state.booking.rackets > 0 ? ` • ${state.booking.rackets} Raket` : '') +
+                        (state.booking.balls > 0 ? ` • ${state.booking.balls} Tabung Bola` : ''),
+                    breakdown: [
+                        { label: `Sewa Lapangan (${state.booking.duration} Jam)`, amount: calc.courtSubtotal },
+                        ...(state.booking.rackets > 0 ? [{ label: `Sewa Raket (${state.booking.rackets}x)`, amount: calc.racketsSubtotal }] : []),
+                        ...(state.booking.balls > 0 ? [{ label: `Tabung Bola (${state.booking.balls}x)`, amount: calc.ballsSubtotal }] : []),
+                        { label: 'Biaya Layanan', amount: calc.serviceFee }
+                    ],
+                    total: calc.grandTotal
+                };
+            } else if (type === 'openmatch') {
+                const match = state.openMatches.find(m => m.id === matchId);
+                const serviceFee = 5000;
+                state.pendingCheckout = {
+                    type: 'Open Match',
+                    matchId: match.id,
+                    orderId,
+                    title: `${match.club} — ${match.court}`,
+                    schedule: match.time,
+                    details: `Open Match (${match.level}) • Slot Pemain #${match.players.length + 1}`,
+                    breakdown: [
+                        { label: 'Patungan Lapangan & Bola (1 Pemain)', amount: match.feePerPerson },
+                        { label: 'Biaya Layanan', amount: serviceFee }
+                    ],
+                    total: match.feePerPerson + serviceFee
+                };
+            }
+
+            // Populate Checkout Modal
+            const p = state.pendingCheckout;
+            document.getElementById('checkout-badge').textContent = p.type;
+            document.getElementById('checkout-order-id').textContent = p.orderId;
+            document.getElementById('checkout-title').textContent = p.title;
+            document.getElementById('checkout-subtitle').textContent = p.schedule;
+            document.getElementById('checkout-breakdown').innerHTML = p.breakdown.map(b => `
+                <div class="flex justify-between">
+                    <span>${b.label}</span>
+                    <span class="font-semibold text-navy-900">${formatRupiah(b.amount)}</span>
+                </div>
+            `).join('');
+            document.getElementById('checkout-total').textContent = formatRupiah(p.total);
+
+            // Reset modal steps
+            document.getElementById('checkout-step-form').classList.remove('hidden');
+            document.getElementById('checkout-step-processing').classList.add('hidden');
+            document.getElementById('checkout-step-success').classList.add('hidden');
+
+            document.getElementById('modal-checkout').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('modal-checkout').classList.add('hidden');
+        }
+
+        function simulatePaymentProcess() {
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            
+            // Show loading step
+            document.getElementById('checkout-step-form').classList.add('hidden');
+            document.getElementById('checkout-step-processing').classList.remove('hidden');
+
+            setTimeout(() => {
+                const p = state.pendingCheckout;
+
+                // If Open Match, add user to match players list
+                if (p.type === 'Open Match' && p.matchId) {
+                    const match = state.openMatches.find(m => m.id === p.matchId);
+                    if (match && match.players.length < match.maxPlayers) {
+                        match.players.push({
+                            name: state.user.name,
+                            level: state.user.level,
+                            side: state.user.side.includes('Left') ? 'Left' : 'Right',
+                            initials: state.user.initials
+                        });
+                    }
+                }
+
+                // Add to My Bookings
+                state.myBookings.unshift({
+                    ticketId: p.orderId.replace('#', ''),
+                    type: p.type,
+                    title: p.title,
+                    schedule: p.schedule,
+                    details: p.details,
+                    totalPaid: p.total,
+                    paymentMethod,
+                    status: 'LUNAS'
+                });
+
+                // Update UI
+                renderOpenMatches();
+                renderMyBookings();
+
+                // Show Success step
+                document.getElementById('checkout-step-processing').classList.add('hidden');
+                document.getElementById('checkout-step-success').classList.remove('hidden');
+                lucide.createIcons();
+            }, 1300);
+        }
+
+        function finishCheckoutAndViewTicket() {
+            closeCheckoutModal();
+            switchTab('mybookings');
+            showToast('Tiket QR aktif! Siap digunakan saat tiba di klub.');
+        }
+
+        // --- 7. MY BOOKINGS (QR TICKETS) ---
+        function renderMyBookings() {
+            const container = document.getElementById('my-bookings-list');
+            document.getElementById('my-bookings-badge').textContent = state.myBookings.length;
+            document.getElementById('mob-bookings-badge').textContent = state.myBookings.length;
+
+            if (state.myBookings.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-2 bg-white rounded-3xl p-10 text-center border border-slate-200 space-y-3">
+                        <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                            <i data-lucide="calendar-x" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-navy-900">Belum Ada Jadwal Aktif</h3>
+                        <p class="text-xs text-slate-500 max-w-sm mx-auto">Kamu belum memiliki reservasi lapangan atau sesi open match. Yuk mulai booking sekarang!</p>
+                        <button onclick="switchTab('booking')" class="px-5 py-2.5 rounded-xl bg-court-500 text-white font-bold text-xs">Cari Lapangan</button>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = state.myBookings.map((item, index) => `
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col justify-between">
+                    <!-- Top Ticket Strip -->
+                    <div class="bg-navy-900 text-white px-5 py-3.5 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${item.type === 'Open Match' ? 'bg-limepadel text-navy-950' : 'bg-court-500 text-navy-950'}">
+                                ${item.type}
+                            </span>
+                            <span class="text-xs font-mono text-slate-300">#${item.ticketId}</span>
+                        </div>
+                        <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[11px] font-bold">
+                            ● ${item.status}
+                        </span>
+                    </div>
+
+                    <!-- Ticket Body + Simulated SVG QR -->
+                    <div class="p-5 flex gap-4 items-center justify-between">
+                        <div class="space-y-1.5">
+                            <h3 class="font-display font-bold text-base sm:text-lg text-navy-900 leading-snug">${item.title}</h3>
+                            <p class="text-xs font-semibold text-court-700 flex items-center gap-1.5">
+                                <i data-lucide="calendar-clock" class="w-3.5 h-3.5"></i> ${item.schedule}
+                            </p>
+                            <p class="text-xs text-slate-500">${item.details}</p>
+                            <div class="pt-2 flex items-center gap-3 text-[11px] text-slate-400">
+                                <span>Total: <strong class="text-navy-900">${formatRupiah(item.totalPaid)}</strong></span>
+                                <span>•</span>
+                                <span>${item.paymentMethod}</span>
+                            </div>
+                        </div>
+
+                        <!-- Clean SVG QR Code Representation -->
+                        <div class="shrink-0 p-2.5 bg-slate-50 rounded-2xl border border-slate-200 text-center">
+                            <svg class="w-16 h-16 text-navy-900" viewBox="0 0 36 36" fill="currentColor">
+                                <path d="M2 2h10v10H2V2zm2 2v6h6V4H4zm2 2h2v2H6V6zm18-4h10v10H24V2zm2 2v6h6V4h-6zm2 2h2v2h-2V6zM2 24h10v10H2V24zm2 2v6h6v-6H4zm2 2h2v2H6v-2zm10-24h2v4h-2V4zm4 2h2v4h-2V6zm-4 6h4v2h-4v-2zm-2 4h2v4h-2v-4zm4 2h4v2h-4v-2zm6-2h2v6h-2v-6zm4 2h2v4h-2v-4zM14 24h4v2h-4v-2zm6 0h2v4h-2v-4zm4 2h4v2h-4v-2zm-8 4h6v4h-6v-4zm8 2h4v2h-4v-2zm6-2h2v4h-2v-4z"/>
+                            </svg>
+                            <span class="block text-[9px] font-mono text-slate-400 mt-1">SCAN CHECK-IN</span>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Footer Actions -->
+                    <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+                        <button onclick="copyInviteLink('${item.ticketId}', '${item.title}')" class="text-xs font-bold text-navy-900 hover:text-court-600 flex items-center gap-1.5 transition">
+                            <i data-lucide="share-2" class="w-3.5 h-3.5"></i> Undang Teman Mabar
+                        </button>
+                        <button onclick="cancelBooking(${index})" class="text-xs font-semibold text-rose-600 hover:text-rose-700 transition">
+                            Batalkan Jadwal
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function copyInviteLink(ticketId, title) {
+            const text = `Yuk mabar padel di ${title}! Cek tiket PadelHub #${ticketId}`;
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Link undangan mabar disalin ke clipboard! Siap kirim ke WhatsApp.');
+        }
+
+        function cancelBooking(index) {
+            const removed = state.myBookings.splice(index, 1)[0];
+            renderMyBookings();
+            showToast(`Jadwal ${removed.title} telah dibatalkan (Simulasi Refund).`, 'info');
+        }
+
+        // --- 8. PROFILE MODAL ---
+        function openProfileModal() {
+            document.getElementById('modal-profile').classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('modal-profile').classList.add('hidden');
+        }
+
+        // Initialize icons on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
